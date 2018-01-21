@@ -722,8 +722,12 @@ path_info(char *path)
 		*p = ch;
 
 		/* Break if the initial path component was found */
-		if (ret == 0)
+		if (ret == 0) {
+			/* ensure leading / if path component is a directory */
+			if (S_ISDIR(st.st_mode))
+				return (p - start - 1);
 			break;
+		}
 	}
 
 	return (p - start);
